@@ -2,6 +2,8 @@
 
 Unity Demo for OpenZen usage.
 
+![picture](screenshot.png)
+
 ## Usage
 
 Connect a LP-Research IMU via USB or Bluetooth and open the Unity project. Once
