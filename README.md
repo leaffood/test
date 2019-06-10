@@ -2,9 +2,16 @@
 
 Unity Demo for OpenZen usage.
 
+![picture](screenshot.png)
+
 ## Usage
 
-Connect a LP-Research IMU via USB or Bluetooth and start the Unity project.
+Connect a LP-Research IMU via USB or Bluetooth and open the Unity project. Once
+you loaded the project, click on Assets -> Scenes in the Project explorer and double-click
+the SampleScene item. You can start the project, this may take a couple of seconds because
+OpenZen searches for all connected sensors. After this, you should see the virtual
+sensor rotate, if you rotate the real-world sensor. You may need to move the Unity
+camera to align the rotation directions between the virtual and real-world sensor.
 
 ## OpenZen Library
 
