@@ -67,6 +67,21 @@ public class OpenZenDiscoverAndMoveObject : MonoBehaviour
             print("Succesfully connected to sensor");
             mConnectCanvas.SetActive(false);
             mErrorConnect.SetActive(false);
+
+            ZenComponentHandle_t mComponent = new ZenComponentHandle_t();
+            OpenZen.ZenSensorComponentsByNumber(mZenHandle, mSensorHandle, OpenZen.g_zenSensorType_Imu, 0, mComponent);
+
+            // enable sensor streaming, normally on by default anyways
+            OpenZen.ZenSensorComponentSetBoolProperty(mZenHandle, mSensorHandle, mComponent,
+               (uint)EZenImuProperty.ZenImuProperty_StreamData, true);
+
+            // set the sampling rate to 100 Hz
+            OpenZen.ZenSensorComponentSetInt32Property(mZenHandle, mSensorHandle, mComponent,
+               (uint)EZenImuProperty.ZenImuProperty_SamplingRate, 100);
+
+            // filter mode using accelerometer & gyroscope & magnetometer
+            OpenZen.ZenSensorComponentSetInt32Property(mZenHandle, mSensorHandle, mComponent,
+               (uint)EZenImuProperty.ZenImuProperty_FilterMode, 2);
         }
         else
         {
