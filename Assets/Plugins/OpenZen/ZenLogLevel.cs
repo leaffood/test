@@ -11,9 +11,9 @@
 
 public enum ZenLogLevel {
   ZenLogLevel_Off,
-  ZenLogLevel_Debug,
-  ZenLogLevel_Info,
-  ZenLogLevel_Warning,
   ZenLogLevel_Error,
+  ZenLogLevel_Warning,
+  ZenLogLevel_Info,
+  ZenLogLevel_Debug,
   ZenLogLevel_Max
 }
