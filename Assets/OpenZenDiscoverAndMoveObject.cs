@@ -73,15 +73,21 @@ public class OpenZenDiscoverAndMoveObject : MonoBehaviour
 
             // enable sensor streaming, normally on by default anyways
             OpenZen.ZenSensorComponentSetBoolProperty(mZenHandle, mSensorHandle, mComponent,
-               (uint)EZenImuProperty.ZenImuProperty_StreamData, true);
+               (int)EZenImuProperty.ZenImuProperty_StreamData, true);
 
             // set the sampling rate to 100 Hz
             OpenZen.ZenSensorComponentSetInt32Property(mZenHandle, mSensorHandle, mComponent,
-               (uint)EZenImuProperty.ZenImuProperty_SamplingRate, 100);
+               (int)EZenImuProperty.ZenImuProperty_SamplingRate, 100);
 
             // filter mode using accelerometer & gyroscope & magnetometer
             OpenZen.ZenSensorComponentSetInt32Property(mZenHandle, mSensorHandle, mComponent,
-               (uint)EZenImuProperty.ZenImuProperty_FilterMode, 2);
+               (int)EZenImuProperty.ZenImuProperty_FilterMode, 2);
+
+            // Ensure the Orientation data is streamed out
+            OpenZen.ZenSensorComponentSetBoolProperty(mZenHandle, mSensorHandle, mComponent,
+               (int)EZenImuProperty.ZenImuProperty_OutputQuat, true);
+
+            print("Sensor configuration complete");
         }
         else
         {

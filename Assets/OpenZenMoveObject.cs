@@ -12,6 +12,11 @@ public class OpenZenMoveObject : MonoBehaviour
     ZenClientHandle_t mZenHandle = new ZenClientHandle_t();
     ZenSensorHandle_t mSensorHandle = new ZenSensorHandle_t();
 
+    [Tooltip("IO Type which OpenZen should use to connect to the sensor.")]
+    public string OpenZenIoType = "SiUsb";
+    [Tooltip("Idenfier which is used to connect to the sensor. The name depends on the IO type used and the configuration of the sensor.")]
+    public string OpenZenIdentifier = "lpmscu2000573";
+
     // Use this for initialization
     void Start()
     {
@@ -22,17 +27,39 @@ public class OpenZenMoveObject : MonoBehaviour
         // you cant start the DiscoverSensorScene. The information of all 
         // found sensors is printed in the debug console of Unity after
         // the search is complete.
-        string ioType = "SiUsb";
-        string identifier = "lpmscu2000573";
+
+        print("Trying to connect to OpenZen Sensor on IO " + OpenZenIoType +
+            " with sensor name " + OpenZenIdentifier);
 
         var sensorInitError = OpenZen.ZenObtainSensorByName(mZenHandle,
-            ioType,
-            identifier,
+            OpenZenIoType,
+            OpenZenIdentifier,
             0,
             mSensorHandle);
         if (sensorInitError != ZenSensorInitError.ZenSensorInitError_None)
         {
             print("Error while connecting to sensor.");
+        } else {
+            ZenComponentHandle_t mComponent = new ZenComponentHandle_t();
+            OpenZen.ZenSensorComponentsByNumber(mZenHandle, mSensorHandle, OpenZen.g_zenSensorType_Imu, 0, mComponent);
+
+            // enable sensor streaming, normally on by default anyways
+            OpenZen.ZenSensorComponentSetBoolProperty(mZenHandle, mSensorHandle, mComponent,
+               (int)EZenImuProperty.ZenImuProperty_StreamData, true);
+
+            // set the sampling rate to 100 Hz
+            OpenZen.ZenSensorComponentSetInt32Property(mZenHandle, mSensorHandle, mComponent,
+               (int)EZenImuProperty.ZenImuProperty_SamplingRate, 100);
+
+            // filter mode using accelerometer & gyroscope & magnetometer
+            OpenZen.ZenSensorComponentSetInt32Property(mZenHandle, mSensorHandle, mComponent,
+               (int)EZenImuProperty.ZenImuProperty_FilterMode, 2);
+
+            // Ensure the Orientation data is streamed out
+            OpenZen.ZenSensorComponentSetBoolProperty(mZenHandle, mSensorHandle, mComponent,
+               (int)EZenImuProperty.ZenImuProperty_OutputQuat, true);
+
+            print("Sensor configuration complete");
         }
     }
     
