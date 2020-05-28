@@ -18,7 +18,7 @@ running the sensor discovery first.
 
 ## OpenZen Library
 
-This demo compiles a pre-compiled OpenZen DLL for Windows 64-bit. You can find the
+This repository contains a pre-compiled OpenZen DLL for Windows 64-bit. You can find the
 source of OpenZen [here](https://bitbucket.org/lpresearch/openzen/).
 
 ## External Licences
