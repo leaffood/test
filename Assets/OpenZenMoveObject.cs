@@ -12,8 +12,10 @@ public class OpenZenMoveObject : MonoBehaviour
     ZenClientHandle_t mZenHandle = new ZenClientHandle_t();
     ZenSensorHandle_t mSensorHandle = new ZenSensorHandle_t();
 
+    public enum  OpenZenIoTypes { SiUsb, Bluetooth };
+
     [Tooltip("IO Type which OpenZen should use to connect to the sensor.")]
-    public string OpenZenIoType = "SiUsb";
+    public OpenZenIoTypes OpenZenIoType = OpenZenIoTypes.SiUsb;
     [Tooltip("Idenfier which is used to connect to the sensor. The name depends on the IO type used and the configuration of the sensor.")]
     public string OpenZenIdentifier = "lpmscu2000573";
 
@@ -32,7 +34,7 @@ public class OpenZenMoveObject : MonoBehaviour
             " with sensor name " + OpenZenIdentifier);
 
         var sensorInitError = OpenZen.ZenObtainSensorByName(mZenHandle,
-            OpenZenIoType,
+            OpenZenIoType.ToString(),
             OpenZenIdentifier,
             0,
             mSensorHandle);
