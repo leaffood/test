@@ -83,7 +83,7 @@ public class OpenZenMoveObject : MonoBehaviour
             {
                 switch (zenEvent.eventType)
                 {
-                    case (int)ZenImuEvent.ZenImuEvent_Sample:
+                    case ZenEventType.ZenEventType_ImuData:
                         // read quaternion
                         OpenZenFloatArray fq = OpenZenFloatArray.frompointer(zenEvent.data.imuData.q);
                         // Unity Quaternion constructor has order x,y,z,w

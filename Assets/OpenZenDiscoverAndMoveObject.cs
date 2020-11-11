@@ -117,7 +117,7 @@ public class OpenZenDiscoverAndMoveObject : MonoBehaviour
                 // event
                 switch (zenEvent.eventType)
                 {
-                    case (int)ZenSensorEvent.ZenSensorEvent_SensorFound:
+                    case ZenEventType.ZenEventType_SensorFound:
                         print("ZenSensorEvent_SensorFound, sensor name: " + zenEvent.data.sensorFound.name + 
                             " identifier: " + zenEvent.data.sensorFound.identifier + 
                             " IoType : " + zenEvent.data.sensorFound.ioType);
@@ -135,7 +135,7 @@ public class OpenZenDiscoverAndMoveObject : MonoBehaviour
                         mDropdownSensorSelect.AddOptions(dropOptions);
 
                         break;
-                    case (int)ZenSensorEvent.ZenSensorEvent_SensorListingProgress:
+                    case ZenEventType.ZenEventType_SensorListingProgress:
                         if (zenEvent.data.sensorListingProgress.complete > 0)
                         {
                             mTextTitle.text = "Please select Sensor";
@@ -148,7 +148,7 @@ public class OpenZenDiscoverAndMoveObject : MonoBehaviour
             {
                 switch (zenEvent.eventType)
                 {
-                    case (int)ZenImuEvent.ZenImuEvent_Sample:
+                    case ZenEventType.ZenEventType_ImuData:
                         // read acceleration
                         OpenZenFloatArray fa = OpenZenFloatArray.frompointer(zenEvent.data.imuData.a);
                         // read euler angles
