@@ -68,34 +68,30 @@ public class OpenZenMoveObject : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // run as long as there are new OpenZen events to process
-        while (true)
+        ZenEvent zenEvent = new ZenEvent();
+        // Consume all new OpenZen events
+        while (OpenZen.ZenPollNextEvent(mZenHandle, zenEvent))
         {
-            ZenEvent zenEvent = new ZenEvent();
-            // read all events which are waiting for us
-            // use the rotation from the newest IMU event
-            if (!OpenZen.ZenPollNextEvent(mZenHandle, zenEvent))
-                break;
-
-            // if compontent handle = 0, this is a OpenZen wide event,
+            // If component handle == 0, this is a OpenZen wide event,
             // like sensor search
-            if (zenEvent.component.handle != 0)
+            if (zenEvent.component.handle != 0
+                && zenEvent.eventType == ZenEventType.ZenEventType_ImuData)
             {
-                switch (zenEvent.eventType)
-                {
-                    case ZenEventType.ZenEventType_ImuData:
-                        // read quaternion
-                        OpenZenFloatArray fq = OpenZenFloatArray.frompointer(zenEvent.data.imuData.q);
-                        // Unity Quaternion constructor has order x,y,z,w
-                        // Furthermore, y and z axis need to be flipped to 
-                        // convert between the LPMS and Unity coordinate system
-                        Quaternion sensorOrientation = new Quaternion(fq.getitem(1),
-                                                                    fq.getitem(3),
-                                                                    fq.getitem(2),
-                                                                    fq.getitem(0));
-                        transform.rotation = sensorOrientation;
-                        break;
-                }
+                // read quaternion
+                OpenZenFloatArray fq = OpenZenFloatArray.frompointer(zenEvent.data.imuData.q);
+
+                // Unity converts the model to left-handed by flipping the direction of X.
+                // The "LPMS World Frame" is +Z up and right-handed, Unity's is +Y up and left-handed.
+                // We convert between the two by exchanging the global Y and Z axes.
+                // The following calculation accounts for these two transformations.  With this,
+                // the model will be displayed in the correct orientation and the Euler angles
+                // printed by Unity will correspond to the sensor axes with the sign of X flipped.
+                float invSqrt2 = 1 / Mathf.Sqrt(2.0f); // This ensures the result is normalized.
+                float w = invSqrt2 * fq.getitem(0);  // OpenZen stores w first.
+                float x = invSqrt2 * fq.getitem(1);
+                float y = invSqrt2 * fq.getitem(2);
+                float z = invSqrt2 * fq.getitem(3);
+                transform.rotation = new Quaternion(y - z,  x - w, -w - x, y + z); // Unity order: xyzw
             }
         }
     }
