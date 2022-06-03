@@ -160,8 +160,8 @@ public class OpenZenDiscoverAndMoveObject : MonoBehaviour
                         // Furthermore, y and z axis need to be flipped to 
                         // convert between the LPMS and Unity coordinate system
                         Quaternion sensorOrientation = new Quaternion(fq.getitem(1),
-                                                                    fq.getitem(3),
-                                                                    fq.getitem(2),
+                                                                    -fq.getitem(2),
+                                                                    -fq.getitem(3),
                                                                     fq.getitem(0));
                         transform.rotation = sensorOrientation;
                         break;
