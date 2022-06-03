@@ -21,6 +21,14 @@ running the sensor discovery first.
 This repository contains a pre-compiled OpenZen DLL for Windows 64-bit. You can find the
 source of OpenZen [here](https://bitbucket.org/lpresearch/openzen/).
 
+To update OpenZen Unity plugin, you need to update the C# bindings inside `Assets/Plugins/OpenZen`:
+
+1. Generate [OpenZen C# interface](https://bitbucket.org/lpresearch/openzen/src/master/bindings/) using SWIG.
+
+2. Build OpenZen library with `ZEN_CSHARP` turned on.
+
+3. Copy the generated items from step 1, `OpenZen.dll` and `SiUSBXp.dll` from step 2 into `Assets/Plugins/OpenZen` folder.
+
 ## External Licences
 
 This repository contains the SiLabs DLL USB Xpress driver. Please see
